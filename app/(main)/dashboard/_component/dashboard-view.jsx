@@ -2,12 +2,13 @@
 
 import React from "react";
 import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
+  RadarChart,
+  Radar,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
   Tooltip,
+  Legend,
   ResponsiveContainer,
 } from "recharts";
 import {
@@ -143,21 +144,22 @@ const DashboardView = ({ insights }) => {
         </Card>
       </div>
 
-      {/* Salary Ranges Chart */}
+      {/* Salary Ranges Radar Chart */}
       <Card className="col-span-4">
         <CardHeader>
-          <CardTitle>Salary Ranges by Role</CardTitle>
+          <CardTitle>Salary Profiles by Role</CardTitle>
           <CardDescription>
-            Displaying minimum, median, and maximum salaries (in thousands)
+            Comparing minimum, median, and maximum salary profiles across roles
+            (in thousands)
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="h-[400px]">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={salaryData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
+              <RadarChart data={salaryData}>
+                <PolarGrid />
+                <PolarAngleAxis dataKey="name" />
+                <PolarRadiusAxis angle={30} domain={[0, 150]} />
                 <Tooltip
                   content={({ active, payload, label }) => {
                     if (active && payload && payload.length) {
@@ -175,10 +177,29 @@ const DashboardView = ({ insights }) => {
                     return null;
                   }}
                 />
-                <Bar dataKey="min" fill="#94a3b8" name="Min Salary (K)" />
-                <Bar dataKey="median" fill="#64748b" name="Median Salary (K)" />
-                <Bar dataKey="max" fill="#475569" name="Max Salary (K)" />
-              </BarChart>
+                <Radar
+                  name="Min Salary"
+                  dataKey="min"
+                  stroke="#94a3b8"
+                  fill="#94a3b8"
+                  fillOpacity={0.6}
+                />
+                <Radar
+                  name="Median Salary"
+                  dataKey="median"
+                  stroke="#64748b"
+                  fill="#64748b"
+                  fillOpacity={0.6}
+                />
+                <Radar
+                  name="Max Salary"
+                  dataKey="max"
+                  stroke="#475569"
+                  fill="#475569"
+                  fillOpacity={0.6}
+                />
+                <Legend />
+              </RadarChart>
             </ResponsiveContainer>
           </div>
         </CardContent>
